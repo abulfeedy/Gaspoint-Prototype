@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gaspoint - Buy Token Instantly</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+        min-height: 100vh;
+        color: #e2e8f0;
+        font-family: "Inter", sans-serif;
+      }
+      .section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 4rem 1rem;
+      }
+      .card {
+        background: #2d3748;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .btn {
+        transition: transform 0.2s, background-color 0.2s;
+      }
+      .btn:hover {
+        transform: scale(1.05);
+        background-color: #5a67d8;
+      }
+      .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .crypto-icon {
+        background: linear-gradient(45deg, #4c51bf, #667eea);
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="fixed top-0 w-full bg-gray-900/80 backdrop-blur-sm z-10">
+      <nav
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-indigo-400">Gaspoint</h1>
+        <div class="flex space-x-4 items-center">
+          <a href="#features" class="text-gray-300 hover:text-indigo-400"
+            >Features</a
+          >
+          <a href="#how-it-works" class="text-gray-300 hover:text-indigo-400"
+            >How It Works</a
+          >
+          <a
+            href="/signup"
+            class="btn bg-indigo-600 text-white px-4 py-2 rounded-md"
+            >Get Started</a
+          >
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="section flex flex-col items-center text-center mt-16">
+      <h2 class="text-4xl sm:text-5xl font-extrabold text-white mb-4 fade-in">
+        Buy Crypto with Ease
+      </h2>
+      <p class="text-lg text-gray-400 mb-6 max-w-2xl fade-in">
+        Purchase ETH, BNB, SOL, or TRON instantly using secure virtual accounts.
+        No hassle, no delays.
+      </p>
+      <div class="flex space-x-4 mb-6 fade-in">
+        <a
+          href="/signup"
+          class="btn bg-indigo-600 text-white px-6 py-3 rounded-md text-lg"
+          >Start Trading Now</a
+        >
+        <a
+          href="#how-it-works"
+          class="btn bg-gray-700 text-white px-6 py-3 rounded-md text-lg"
+          >Learn More</a
+        >
+      </div>
+      <div class="card p-4 text-center fade-in">
+        <p class="text-sm text-gray-400">Live Naira/USD Rate</p>
+        <p id="exchangeRate" class="text-xl font-semibold text-indigo-400">
+          Loading...
+        </p>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+      <h2 class="text-3xl font-bold text-center text-white mb-12 fade-in">
+        Why Choose Gaspoint?
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="card p-6 text-center fade-in">
+          <div class="crypto-icon mx-auto mb-4">
+            <svg
+              class="w-8 h-8 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Fast Transactions</h3>
+          <p class="text-gray-400">
+            Complete purchases in minutes with instant payment verification.
+          </p>
+        </div>
+        <div class="card p-6 text-center fade-in">
+          <div class="crypto-icon mx-auto mb-4">
+            <svg
+              class="w-8 h-8 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 11c0-2.76 2.24-5 5-5s5 2.24 5 5-2.24 5-5 5m-7-5c0-2.76-2.24-5-5-5S0 8.24 0 11s2.24 5 5 5" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Multiple Tokens</h3>
+          <p class="text-gray-400">
+            Buy ETH, BNB, SOL, or TRON with a single platform.
+          </p>
+        </div>
+        <div class="card p-6 text-center fade-in">
+          <div class="crypto-icon mx-auto mb-4">
+            <svg
+              class="w-8 h-8 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 15v2m-6 4h12M3 3h18v18H3V3z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Secure Payments</h3>
+          <p class="text-gray-400">
+            Admin-verified transfers ensure your funds are safe.
+          </p>
+        </div>
+        <div class="card p-6 text-center fade-in">
+          <div class="crypto-icon mx-auto mb-4">
+            <svg
+              class="w-8 h-8 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Daily Limits</h3>
+          <p class="text-gray-400">Transact up to ₦50,000 daily.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section bg-gray-800/50">
+      <h2 class="text-3xl font-bold text-center text-white mb-12 fade-in">
+        How It Works
+      </h2>
+      <div class="space-y-8">
+        <div class="flex items-start space-x-4 fade-in">
+          <div class="crypto-icon p-3 rounded-full">
+            <span class="text-xl font-bold text-white">1</span>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold mb-2">Select & Specify</h3>
+            <p class="text-gray-400">
+              Choose your token (ETH, BNB, SOL, or TRON) and enter the quantity
+              and wallet address.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4 fade-in">
+          <div class="crypto-icon p-3 rounded-full">
+            <span class="text-xl font-bold text-white">2</span>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold mb-2">Fund Virtual Account</h3>
+            <p class="text-gray-400">
+              Transfer the NGN amount to your unique virtual account within 10
+              minutes.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4 fade-in">
+          <div class="crypto-icon p-3 rounded-full">
+            <span class="text-xl font-bold text-white">3</span>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold mb-2">Receive Crypto</h3>
+            <p class="text-gray-400">
+              Once admin-verified, your tokens are sent to your wallet
+              instantly.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="section text-center text-gray-400">
+      <p class="fade-in">&copy; 2025 CryptoPlatform. All rights reserved.</p>
+      <p class="mt-2 fade-in">
+        Contact:
+        <a
+          href="mailto:support@cryptoplatform.com"
+          class="text-indigo-400 hover:underline"
+          >support@cryptoplatform.com</a
+        >
+      </p>
+    </footer>
+
+    <script>
+      // Initialize Socket.IO
+      const socket = io("http://localhost:3000");
+
+      // Update exchange rate
+      socket.on("exchangeRate", ({ ngnPerUsd }) => {
+        document.getElementById(
+          "exchangeRate"
+        ).textContent = `₦${ngnPerUsd.toFixed(2)}`;
+      });
+
+      // Scroll-triggered animations
+      const fadeIns = document.querySelectorAll(".fade-in");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      fadeIns.forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>
